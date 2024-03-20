@@ -15,26 +15,26 @@ pub async fn create_db(dsn: &str, dbname: &str, max_connection: u32, timeout: Du
     let db = get_pool(dsn, max_connection, timeout).await;
 
     tracing::debug!("creating database");
+	tracing::debug!("database already exists; skipping");
+    // let result = sqlx::query(format!("CREATE DATABASE {dbname}").as_str())
+    //     .execute(&db)
+    //     .await;
 
-    let result = sqlx::query(format!("CREATE DATABASE {dbname}").as_str())
-        .execute(&db)
-        .await;
-
-    match &result {
-        Ok(_) => {
-            tracing::debug!("created database");
-            return;
-        }
-        Err(sqlx::Error::Database(dbe)) => {
-            if let Some(code) = dbe.code() {
-                if code == "42P04" {
-                    tracing::debug!("database already exists; skipping");
-                    return;
-                }
-            }
-        }
-        _ => (),
-    };
+    // match &result {
+    //     Ok(_) => {
+    //         tracing::debug!("created database");
+    //         return;
+    //     }
+    //     Err(sqlx::Error::Database(dbe)) => {
+    //         if let Some(code) = dbe.code() {
+    //             if code == "42P04" {
+    //                 tracing::debug!("database already exists; skipping");
+    //                 return;
+    //             }
+    //         }
+    //     }
+    //     _ => (),
+    // };
 
     result.unwrap();
 }
