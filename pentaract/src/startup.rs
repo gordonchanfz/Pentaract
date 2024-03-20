@@ -16,6 +16,7 @@ pub async fn create_db(dsn: &str, dbname: &str, max_connection: u32, timeout: Du
 
     tracing::debug!("creating database");
 	tracing::debug!("database already exists; skipping");
+	 return;
     // let result = sqlx::query(format!("CREATE DATABASE {dbname}").as_str())
     //     .execute(&db)
     //     .await;
@@ -36,7 +37,7 @@ pub async fn create_db(dsn: &str, dbname: &str, max_connection: u32, timeout: Du
     //     _ => (),
     // };
 
-    result.unwrap();
+    //result.unwrap();
 }
 
 #[inline]
